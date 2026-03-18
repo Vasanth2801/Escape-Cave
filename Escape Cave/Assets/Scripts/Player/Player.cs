@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -17,6 +18,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform attackPoint;
     [SerializeField] private float attackRadius;
     [SerializeField] private LayerMask attackLayer;
+    [SerializeField] private float attackCoolDown;
 
     [Header("References")]
     [SerializeField] private Rigidbody2D rb;
@@ -39,6 +41,8 @@ public class Player : MonoBehaviour
         HandleAnimations();
 
         Attack();
+
+        StartCoroutine(HeavyAttackCoroutine());
     }
 
     void FixedUpdate()
@@ -71,10 +75,31 @@ public class Player : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.K))
         {
+            animator.SetTrigger("Attack");
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position,attackRadius, attackLayer);
             foreach(Collider2D hit in hitEnemies)
             {
                 Debug.Log("Attacking the Enemy");
+            }
+        }
+    }
+
+    IEnumerator HeavyAttackCoroutine()
+    {
+        yield return new WaitForSeconds(attackCoolDown);
+
+        HeavyAttack();
+    }
+
+    void HeavyAttack()
+    {
+        if(Input.GetKeyDown(KeyCode.L))
+        {
+            animator.SetTrigger("HeavyAttack");
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, attackLayer);
+            foreach(Collider2D hit in hitEnemies)
+            {
+                Debug.Log("Heavily Attacked the Enemy");
             }
         }
     }
