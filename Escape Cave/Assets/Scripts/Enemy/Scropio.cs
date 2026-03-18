@@ -79,7 +79,11 @@ public class Scropio : MonoBehaviour
         Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, attackRadius, playerMask);
         foreach(Collider2D hit in  hitPlayer)
         {
-            Debug.Log("Attacking the Player");
+            PlayerHealth ph = hit.GetComponent<PlayerHealth>();
+            if(ph != null)
+            {
+                ph.TakeDamage(5);
+            }
         }
     }
 

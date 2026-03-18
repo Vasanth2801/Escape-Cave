@@ -78,7 +78,11 @@ public class Monster : MonoBehaviour
         Collider2D[] hitPlayer = Physics2D.OverlapCircleAll(attackPoint.position, checkRadius, playerLayer);
         foreach(Collider2D hit in hitPlayer)
         {
-            Debug.Log("Attacking the Player");
+            PlayerHealth ph = hit.GetComponent<PlayerHealth>();
+            if(ph != null)
+            {
+                ph.TakeDamage(5);
+            }
         }
     }
 
